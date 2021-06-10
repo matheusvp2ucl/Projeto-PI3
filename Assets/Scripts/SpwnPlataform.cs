@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Vuforia;
 
 public class SpwnPlataform : MonoBehaviour
 {
@@ -9,17 +10,19 @@ public class SpwnPlataform : MonoBehaviour
     public List<Transform> currentPlatforms = new List<Transform>();
 
     public int offset;
-
     private Transform player;
     private Transform currentPlatformPoint;
     private int platformIndex;
 
+    private ImageTarget teste;
+    private TrackableBehaviour mTrackableBehaviour;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
         for ( int i = 0; i < platforms.Count; i++ ) {
             Transform p = Instantiate( platforms[i], new Vector3( 0, 0, i * 86 ), transform.rotation ).transform;
+            p.SetParent(this.transform);
             currentPlatforms.Add( p );
             offset += 86;
         }

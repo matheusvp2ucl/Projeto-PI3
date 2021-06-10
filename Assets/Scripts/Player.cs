@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
 
         direction.y = jumpVelocity;
 
-        // controller.Move(direction * Time.deltaTime);
+        controller.Move(direction * Time.deltaTime);
 
     }
 
