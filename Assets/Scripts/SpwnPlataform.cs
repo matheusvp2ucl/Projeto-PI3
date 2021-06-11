@@ -8,14 +8,23 @@ public class SpwnPlataform : MonoBehaviour
     public List<GameObject> platforms = new List<GameObject>();
     public List<Transform> currentPlatforms = new List<Transform>();
 
+
+    public float speed;
     public int offset;
+    public int offsetReset;
     private Transform player;
+    private GameObject objPlayer;
     private Transform currentPlatformPoint;
     private int platformIndex;
+    
+
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        objPlayer = GameObject.FindGameObjectWithTag("Player");
+        speed = objPlayer.GetComponent<Player>().speed;
+
+        player = objPlayer.transform;
 
         for ( int i = 0; i < platforms.Count; i++ ) {
             Transform p = Instantiate( platforms[i], new Vector3( 0, 0, i * 86 ), transform.rotation ).transform;
@@ -30,25 +39,33 @@ public class SpwnPlataform : MonoBehaviour
 
     void Update()
     {
-        float distance = player.position.z - currentPlatformPoint.position.z;
 
-        if ( distance >= 5 ) {
-            Recycle(currentPlatforms[platformIndex].gameObject);
-            platformIndex++;
+        if ( !objPlayer.GetComponent<Player>().isGameOver() ) {
+            AttEsteiras();
 
-            if (platformIndex > currentPlatforms.Count - 1) {
-                platformIndex = 0;
+            float distance = player.position.z - currentPlatformPoint.position.z;
+
+            if (distance >= 5) {
+                Recycle(currentPlatforms[platformIndex].gameObject);
+                platformIndex++;
+                if (platformIndex > currentPlatforms.Count - 1) {
+                    platformIndex = 0;
+                }
+                currentPlatformPoint = currentPlatforms[platformIndex].GetComponent<Platform>().point;
             }
-
-            currentPlatformPoint = currentPlatforms[platformIndex].GetComponent<Platform>().point;
-
         }
         
     }
 
     public void Recycle( GameObject platform ) {
-        platform.transform.position = new Vector3( 0, 0, offset );
-        offset += 86;
+        platform.transform.position = new Vector3( 0, 0, offsetReset);
     }
+
+    public void AttEsteiras() {
+        for (int i = 0; i < currentPlatforms.Count; i++ ) {
+            currentPlatforms[i].Translate(new Vector3(0, 0, -speed * Time.fixedDeltaTime));
+        }
+    }
+
 
 }

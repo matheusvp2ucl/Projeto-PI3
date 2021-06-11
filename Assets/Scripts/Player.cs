@@ -14,21 +14,24 @@ public class Player : MonoBehaviour
     public float rayRadios;
     public LayerMask layer;
 
-    public float HSpeed;
+    public float HTamanho;
 
     private int blockMoveRight;
     private int blockMoveLeft;
     private bool isMovingRight;
     private bool isMovingLeft;
 
+    public Animator anim;
+    private bool isDead;
 
     void Start() {
+        Debug.Log("Morto = " + isDead);
         controller = GetComponent<CharacterController>();
     }
 
     void Update() {
 
-        Vector3 direction = Vector3.forward * speed;
+        Vector3 direction = Vector3.zero;
 
         if (controller.isGrounded) {
 
@@ -58,33 +61,42 @@ public class Player : MonoBehaviour
 
         direction.y = jumpVelocity;
 
-        controller.Move(direction * Time.deltaTime);
+        controller.Move( direction * Time.deltaTime );
 
     }
 
     IEnumerator LeftMove() {
-        for (float i = 0; i < 10; i += 0.1f) {
-            controller.Move(Vector3.left * Time.deltaTime * HSpeed);
+        for (float i = 0; i < 10; i += 0.1f ) {
+            controller.Move(Vector3.left * Time.fixedDeltaTime * HTamanho);
             yield return null;
         }
         isMovingLeft = false;
     }
 
     IEnumerator RightMove() {
-        for (float i = 0; i < 10; i += 0.1f) {
-            controller.Move(Vector3.right * Time.deltaTime * HSpeed);
+        for (float i = 0; i < 10; i += 0.1f ) {
+            controller.Move( Vector3.right * Time.fixedDeltaTime * HTamanho);
             yield return null;
         }
         isMovingRight = false;
+        
     }
 
     void OnCollision() {
         RaycastHit hit;
 
-        if ( Physics.Raycast( transform.position, transform.TransformDirection(Vector3.forward), out hit, rayRadios, layer) ) {
+        if ( Physics.Raycast( transform.position, transform.TransformDirection(Vector3.forward), out hit, rayRadios, layer) && !isDead ) {
+            Debug.Log("Bateu em algum objeto !");
             // Game Over
-
+            anim.SetTrigger("die");
+            isDead = true;
+            speed = 0;
+            jumpHeigth = 0;
+            HTamanho = 0;
         }
     }
 
+    public bool isGameOver() {
+        return isDead;
+    }
 }
