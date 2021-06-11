@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.LeftArrow) && blockMoveLeft != 1 && !isMovingLeft) {
                 isMovingLeft = true;
-                StartCoroutine(LeftMove());
+                StartCoroutine( LeftMove() );
                 blockMoveLeft++;
                 blockMoveRight--;
             }

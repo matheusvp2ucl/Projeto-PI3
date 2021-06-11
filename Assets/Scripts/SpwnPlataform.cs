@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Vuforia;
 
 public class SpwnPlataform : MonoBehaviour
 {
@@ -14,8 +13,6 @@ public class SpwnPlataform : MonoBehaviour
     private Transform currentPlatformPoint;
     private int platformIndex;
 
-    private ImageTarget teste;
-    private TrackableBehaviour mTrackableBehaviour;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
