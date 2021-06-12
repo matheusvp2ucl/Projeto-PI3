@@ -21,6 +21,10 @@ public class Player : MonoBehaviour
     private bool isMovingRight;
     private bool isMovingLeft;
 
+    private bool buttonLeft;
+    private bool buttonRight;
+    private bool buttonJump;
+
     public Animator anim;
     private bool isDead;
 
@@ -35,19 +39,25 @@ public class Player : MonoBehaviour
 
         if (controller.isGrounded) {
 
-            if (Input.GetKeyDown(KeyCode.Space)) {
+            // Input.GetKeyDown(KeyCode.Space)
+            if ( buttonJump ) {
                 jumpVelocity = jumpHeigth;
+                buttonJump = false;
             }
 
-            if (Input.GetKeyDown(KeyCode.RightArrow) && blockMoveRight != 1 && !isMovingRight) {
+            // Input.GetKeyDown(KeyCode.RightArrow)
+            if ( buttonRight && blockMoveRight != 1 && !isMovingRight) {
                 isMovingRight = true;
+                buttonRight = false;
                 StartCoroutine(RightMove());
                 blockMoveRight++;
                 blockMoveLeft--;
             }
 
-            if (Input.GetKeyDown(KeyCode.LeftArrow) && blockMoveLeft != 1 && !isMovingLeft) {
+            // Input.GetKeyDown(KeyCode.LeftArrow)
+            if ( buttonLeft && blockMoveLeft != 1 && !isMovingLeft) {
                 isMovingLeft = true;
+                buttonLeft = false;
                 StartCoroutine( LeftMove() );
                 blockMoveLeft++;
                 blockMoveRight--;
@@ -79,7 +89,6 @@ public class Player : MonoBehaviour
             yield return null;
         }
         isMovingRight = false;
-        
     }
 
     void OnCollision() {
@@ -98,5 +107,17 @@ public class Player : MonoBehaviour
 
     public bool isGameOver() {
         return isDead;
+    }
+
+    public void JumpPlayer() {
+        buttonJump = true;
+    }
+
+    public void RightPlayer() {
+        buttonRight = true;
+    }
+
+    public void LeftPlayer() {
+        buttonLeft = true;
     }
 }

@@ -12,6 +12,7 @@ public class SpwnPlataform : MonoBehaviour
     public float speed;
     public int offset;
     public int offsetReset;
+    public int escala;
     private Transform player;
     private GameObject objPlayer;
     private Transform currentPlatformPoint;
@@ -27,10 +28,9 @@ public class SpwnPlataform : MonoBehaviour
         player = objPlayer.transform;
 
         for ( int i = 0; i < platforms.Count; i++ ) {
-            Transform p = Instantiate( platforms[i], new Vector3( 0, 0, i * 86 ), transform.rotation ).transform;
+            Transform p = Instantiate( platforms[i], new Vector3( 0, 0, i * escala), transform.rotation ).transform;
             p.SetParent(this.transform);
             currentPlatforms.Add( p );
-            offset += 86;
         }
 
         currentPlatformPoint = currentPlatforms[platformIndex].GetComponent<Platform>().point;
