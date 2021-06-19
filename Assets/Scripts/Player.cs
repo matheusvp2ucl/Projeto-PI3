@@ -1,10 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class Player : MonoBehaviour
 {
     private CharacterController controller;
+    public float score;
+    public Text scoreText;
+    public	int scoreCoin;
+    public Text scoreCoinText;
 
     public float speed;
     public float jumpHeigth;
@@ -13,6 +19,7 @@ public class Player : MonoBehaviour
 
     public float rayRadios;
     public LayerMask layer;
+    public LayerMask coinLayer;
 
     public float HTamanho;
 
@@ -28,9 +35,12 @@ public class Player : MonoBehaviour
     public Animator anim;
     private bool isDead;
 
+    private Player player;
+
     void Start() {
         Debug.Log("Morto = " + isDead);
         controller = GetComponent<CharacterController>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     void Update() {
@@ -73,6 +83,12 @@ public class Player : MonoBehaviour
 
         controller.Move( direction * Time.deltaTime );
 
+        if(!player.isDead)
+        {
+	        score += Time.deltaTime * 2f;
+	        scoreText.text = Mathf.Round(score).ToString();
+	    }
+
     }
 
     IEnumerator LeftMove() {
@@ -91,17 +107,25 @@ public class Player : MonoBehaviour
         isMovingRight = false;
     }
 
-    void OnCollision() {
+    void OnCollision() 
+    {
         RaycastHit hit;
 
-        if ( Physics.Raycast( transform.position, transform.TransformDirection(Vector3.forward), out hit, rayRadios, layer) && !isDead ) {
-            Debug.Log("Bateu em algum objeto !");
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, rayRadios, layer) && !isDead ) {
+            Debug.Log("Bateu em algum objeto!");
             // Game Over
             anim.SetTrigger("die");
             isDead = true;
             speed = 0;
             jumpHeigth = 0;
             HTamanho = 0;
+        }
+
+        RaycastHit coinHit;
+
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward + new Vector3(0,1f,0)), out coinHit, rayRadios, coinLayer)) {
+        	AddCoin();
+        	Destroy(coinHit.transform.gameObject);
         }
     }
 
@@ -119,5 +143,11 @@ public class Player : MonoBehaviour
 
     public void LeftPlayer() {
         buttonLeft = true;
+    }
+
+    public void	AddCoin()
+    {
+    	scoreCoin ++;
+    	scoreCoinText.text = scoreCoin.ToString();
     }
 }

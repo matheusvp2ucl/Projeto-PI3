@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
+  <Tracking>
+    <ImageTarget name="adesivo-papel-de-parede-geometrico-preto-branco-escolha-cor" size="10.000000 10.000000" />
+    <ImageTarget name="low_resolution_image" size="10.000000 14.349775" />
+    <ImageTarget name="a6974f37-ffee-454f-b2d9-7d02984ef442" size="10.000000 10.000000" />
+  </Tracking>
+</QCARConfig>
